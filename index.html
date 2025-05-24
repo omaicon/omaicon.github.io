@@ -18,7 +18,7 @@
     }
   </style>
 </head>
-<body onclick="typeCode()" onkeydown="typeCode()" ontouchstart="typeCode()">
+<body onclick="startTyping()" onkeydown="startTyping()" ontouchstart="startTyping()">
   <div id="output">> Iniciando terminal... (toque ou pressione uma tecla)</div>
 
   <script>
@@ -45,13 +45,23 @@ Bem-vindo ao terminal
 
 omaicon@redteam:~$ █
 `;
+
     let index = 0;
+    let started = false;
     const output = document.getElementById('output');
 
-    function typeCode() {
+    function startTyping() {
+      if (started) return;
+      started = true;
+      output.innerHTML = "";
+      typeNextChar();
+    }
+
+    function typeNextChar() {
       if (index < code.length) {
         output.innerHTML += code.charAt(index);
         index++;
+        setTimeout(typeNextChar, 20); // velocidade da digitação
       }
     }
   </script>
