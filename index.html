@@ -16,9 +16,6 @@
     #output {
       min-height: 90vh;
     }
-    #input-line {
-      display: inline;
-    }
     .cursor {
       display: inline-block;
       width: 10px;
@@ -78,35 +75,48 @@ omaicon@redteam:~$ █
     }
 
     function startInteractiveTerminal() {
-      const inputLine = document.createElement("div");
-      inputLine.innerHTML = '<span id="prompt">omaicon@redteam:~$ </span><span id="input-line" contenteditable="true"></span><span class="cursor">█</span>';
-      output.appendChild(inputLine);
-      const input = document.getElementById("input-line");
-      input.focus();
+      createNewPrompt();
 
       document.body.onkeydown = function(e) {
         if (e.key === "Enter") {
           e.preventDefault();
+          const input = document.getElementById("input-line");
           const command = input.innerText.trim();
-          let response = "";
+          const prompt = document.getElementById("prompt").innerText;
+          const cursor = document.querySelector(".cursor");
 
+          const fullCommand = document.createElement("div");
+          fullCommand.innerHTML = `${prompt}${command}`;
+          output.replaceChild(fullCommand, input.parentNode);
+
+          if (cursor) cursor.remove();
+
+          let response = "";
           if (command.toLowerCase() === "whoami") {
-            response = "\\nome: Maicon (omaicon)\\nprofissão: Analista de Segurança, Pentester e Red Team\\nespecialista em C2 personalizados\\nlinguagens: Golang, Python, C, C++, .NET";
+            response = "nome: Maicon (omaicon)<br>profissão: Analista de Segurança, Pentester e Red Team<br>especialista em C2 personalizados<br>linguagens: Golang, Python, C, C++, .NET";
           } else {
-            response = "Comando inválido. Tente: whoami";
+            response = "Comando inválido.";
           }
 
-          const outputLine = document.createElement("div");
-          outputLine.innerHTML = `omaicon@redteam:~$ ${command}\\n${response.replace(/\\n/g, "<br>")}`;
-          output.appendChild(outputLine);
+          const responseLine = document.createElement("div");
+          responseLine.innerHTML = response;
+          output.appendChild(responseLine);
 
-          const newInput = document.createElement("div");
-          newInput.innerHTML = '<span id="prompt">omaicon@redteam:~$ </span><span id="input-line" contenteditable="true"></span><span class="cursor">█</span>';
-          output.appendChild(newInput);
-          newInput.scrollIntoView();
-          setTimeout(() => newInput.querySelector("#input-line").focus(), 10);
+          createNewPrompt();
         }
       };
+    }
+
+    function createNewPrompt() {
+      const promptDiv = document.createElement("div");
+      promptDiv.innerHTML = '<span id="prompt">omaicon@redteam:~$ </span><span id="input-line" contenteditable="true"></span><span class="cursor">█</span>';
+      output.appendChild(promptDiv);
+      setTimeout(() => {
+        const input = document.getElementById("input-line");
+        input.focus();
+        document.execCommand('selectAll', false, null);
+        document.getSelection().collapseToEnd();
+      }, 10);
     }
   </script>
 </body>
