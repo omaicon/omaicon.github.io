@@ -189,8 +189,7 @@ omaicon@redteam:~$ █
     function displayHelp() {
       const helpMenu = document.createElement("div");
       helpMenu.innerHTML = `
-        <br>Comandos disponíveis:<br><br>
-        <div class="menu-option" onclick="openLink('palestras')">[ PALESTRAS ]</div>
+        <br>Comandos disponíveis:<br>
         <div class="menu-option" onclick="openLink('artigos')">[ ARTIGOS ]</div>
         <div class="menu-option" onclick="openLink('projetos')">[ PROJETOS ]</div>
         <div class="menu-option" onclick="openLink('contato')">[ CONTATO ]</div>
@@ -204,7 +203,6 @@ omaicon@redteam:~$ █
     function openLink(page) {
       // Aqui você pode definir para onde cada link deve apontar
       const links = {
-        'palestras': '#palestras',
         'artigos': '#artigos',
         'projetos': '#projetos',
         'contato': '#contato',
