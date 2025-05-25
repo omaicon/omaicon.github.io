@@ -29,13 +29,6 @@
       50% { background: #00ff00; color: black; }
       100% { background: transparent; }
     }
-    #hidden-input {
-      position: absolute;
-      opacity: 0;
-      height: 0;
-      width: 0;
-      pointer-events: none;
-    }
     .menu-option {
       cursor: pointer;
       margin: 5px 0;
@@ -72,9 +65,8 @@
     }
   </style>
 </head>
-<body onclick="focusInput()" onkeydown="focusInput()" ontouchstart="focusInput()">
-  <div id="output">> Iniciando terminal... (toque ou pressione uma tecla)</div>
-  <input id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+<body>
+  <div id="output">> Iniciando terminal... (toque para começar)</div>
   <script>
     const code = `
 omaicon@redteam:~$ sudo ./access_granted
@@ -103,14 +95,6 @@ omaicon@redteam:~$ █
     let index = 0;
     let started = false;
     const output = document.getElementById('output');
-    const hiddenInput = document.getElementById('hidden-input');
-    let currentInput = "";
-    let promptElement = null;
-
-    // Função para manter o foco no campo de entrada oculto
-    function focusInput() {
-      hiddenInput.focus();
-    }
 
     // Função para iniciar a animação de texto no início
     function startTyping() {
@@ -131,26 +115,8 @@ omaicon@redteam:~$ █
       }
     }
 
-    // Função para limpar todos os ouvintes de eventos existentes
-    function clearEventListeners() {
-      // Remove eventos existentes para evitar duplicação
-      document.removeEventListener("keydown", handleKeydown);
-      hiddenInput.removeEventListener("input", updateCurrentPrompt);
-    }
-
     // Função para iniciar o terminal interativo
     function startInteractiveTerminal() {
-      // Limpar eventos existentes e configurar novos
-      clearEventListeners();
-      
-      // Limpar qualquer valor existente
-      hiddenInput.value = "";
-      currentInput = "";
-      
-      // Configura os eventos de teclado
-      document.addEventListener("keydown", handleKeydown);
-      hiddenInput.addEventListener("input", updateCurrentPrompt);
-      
       // Inicia automaticamente com o comando whoami
       setTimeout(() => {
         const commandLine = document.createElement("div");
@@ -170,66 +136,25 @@ omaicon@redteam:~$ █
           output.appendChild(helpCommandLine);
           
           displayHelp();
-          createNewPrompt();
+          
+          // Adiciona o prompt estático (sem capacidade de digitação)
+          const promptLine = document.createElement("div");
+          promptLine.innerHTML = `omaicon@redteam:~$ <span class="cursor">█</span>`;
+          output.appendChild(promptLine);
+          
+          // Rola para o final da página
+          window.scrollTo(0, document.body.scrollHeight);
         }, 1000);
       }, 500);
-      
-      // Adiciona manipulador para manter o foco
-      hiddenInput.addEventListener("blur", () => {
-        setTimeout(focusInput, 100);
-      });
-    }
-    
-    // Função para lidar com pressionamento de tecla
-    function handleKeydown(e) {
-      // Garantir que o input oculto tenha o foco
-      if (document.activeElement !== hiddenInput) {
-        hiddenInput.focus();
-        return;
-      }
-      
-      // Processar a tecla Enter para executar comandos
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const command = hiddenInput.value.trim();
-        executeCommand(command);
-        return;
-      }
-      
-      // Atualiza o prompt após qualquer tecla
-      setTimeout(updateCurrentPrompt, 0);
-    }
-    
-    // Função para atualizar o prompt com o texto atual
-    function updateCurrentPrompt() {
-      if (promptElement) {
-        // Atualiza o texto no prompt
-        currentInput = hiddenInput.value;
-        promptElement.innerHTML = `omaicon@redteam:~$ ${currentInput}<span class="cursor">█</span>`;
-      }
-    }
-    
-    // Função para executar um comando
-    function executeCommand(command) {
-      if (!command) return;
-      
-      // Limpar o input e o estado atual
-      hiddenInput.value = "";
-      currentInput = "";
-      
-      // Substituir o prompt atual com o comando executado
-      if (promptElement) {
-        const commandLine = document.createElement("div");
-        commandLine.innerText = `omaicon@redteam:~$ ${command}`;
-        promptElement.replaceWith(commandLine);
-        promptElement = null;
-      }
-
-      processCommand(command);
     }
 
-    // Função para processar comandos digitados
+    // Função para processar comandos
     function processCommand(command) {
+      // Exibe o comando que seria executado
+      const commandLine = document.createElement("div");
+      commandLine.innerText = `omaicon@redteam:~$ ${command}`;
+      output.appendChild(commandLine);
+      
       let response = "";
       
       if (command.toLowerCase() === "whoami") {
@@ -239,7 +164,9 @@ omaicon@redteam:~$ █
         return;
       } else if (command.toLowerCase() === "clear" || command.toLowerCase() === "cls") {
         output.innerHTML = "";
-        createNewPrompt();
+        const promptLine = document.createElement("div");
+        promptLine.innerHTML = `omaicon@redteam:~$ <span class="cursor">█</span>`;
+        output.appendChild(promptLine);
         return;
       } else {
         response = "Comando inválido. Digite 'help' para ver os comandos disponíveis.";
@@ -248,8 +175,14 @@ omaicon@redteam:~$ █
       const responseLine = document.createElement("div");
       responseLine.innerHTML = response.replace(/\n/g, "<br>");
       output.appendChild(responseLine);
-
-      createNewPrompt();
+      
+      // Adiciona o prompt estático após a resposta
+      const promptLine = document.createElement("div");
+      promptLine.innerHTML = `omaicon@redteam:~$ <span class="cursor">█</span>`;
+      output.appendChild(promptLine);
+      
+      // Rola para o final da página
+      window.scrollTo(0, document.body.scrollHeight);
     }
     
     // Função para exibir o menu de ajuda
@@ -262,8 +195,8 @@ omaicon@redteam:~$ █
         <div class="menu-option" onclick="openLink('projetos')">[ PROJETOS ]</div>
         <div class="menu-option" onclick="openLink('contato')">[ CONTATO ]</div>
         <div class="menu-option" onclick="openLink('github')">[ GITHUB ]</div>
-        <div class="menu-option" onclick="runCommand('whoami')">[ WHOAMI ]</div>
-        <div class="menu-option" onclick="runCommand('clear')">[ CLEAR ]</div>
+        <div class="menu-option" onclick="processCommand('whoami')">[ WHOAMI ]</div>
+        <div class="menu-option" onclick="processCommand('clear')">[ CLEAR ]</div>
       `;
       output.appendChild(helpMenu);
     }
@@ -289,44 +222,10 @@ omaicon@redteam:~$ █
         window.location.href = url;
       }, 1000);
     }
-    
-    // Função para executar comandos via clique
-    function runCommand(command) {
-      // Limpar qualquer entrada anterior
-      hiddenInput.value = "";
-      currentInput = "";
-      
-      const commandLine = document.createElement("div");
-      commandLine.innerText = `omaicon@redteam:~$ ${command}`;
-      output.appendChild(commandLine);
-      
-      processCommand(command);
-    }
 
-    // Função para criar um novo prompt
-    function createNewPrompt() {
-      // Limpar qualquer estado anterior
-      hiddenInput.value = "";
-      currentInput = "";
-      
-      // Criar novo prompt
-      const promptLine = document.createElement("div");
-      promptLine.id = "current-prompt";
-      promptLine.innerHTML = `omaicon@redteam:~$ <span class="cursor">█</span>`;
-      output.appendChild(promptLine);
-      promptElement = promptLine;
-      
-      // Garantir foco no input
-      setTimeout(focusInput, 50);
-      
-      // Garantir que a linha do prompt seja visível
-      window.scrollTo(0, document.body.scrollHeight);
-    }
-
-    // Inicializa ao toque ou clique
+    // Inicializa com toque ou clique
     document.body.addEventListener("click", startTyping);
     document.body.addEventListener("touchstart", startTyping);
-    document.body.addEventListener("keydown", startTyping);
   </script>
 </body>
 </html>
