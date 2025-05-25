@@ -104,6 +104,8 @@ omaicon@redteam:~$ █
     let started = false;
     const output = document.getElementById('output');
     const hiddenInput = document.getElementById('hidden-input');
+    let currentInput = "";
+    let promptElement = null;
 
     function focusInput() {
       hiddenInput.focus();
@@ -149,23 +151,54 @@ omaicon@redteam:~$ █
           createNewPrompt();
         }, 1000);
       }, 500);
-      
-      hiddenInput.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          const command = hiddenInput.value.trim();
-          hiddenInput.value = "";
 
-          const lastPrompt = document.getElementById("current-prompt");
-          if (lastPrompt) {
-            const commandLine = document.createElement("div");
-            commandLine.innerText = `omaicon@redteam:~$ ${command}`;
-            lastPrompt.replaceWith(commandLine);
-          }
-
-          processCommand(command);
-        }
+      // Configurar eventos de teclado para capturar melhor a entrada do usuário
+      document.addEventListener("keydown", handleKeydown);
+      hiddenInput.addEventListener("input", updateCurrentPrompt);
+      hiddenInput.addEventListener("blur", () => {
+        setTimeout(focusInput, 100);
       });
+    }
+    
+    function handleKeydown(e) {
+      // Garantir que o input oculto tenha o foco
+      if (document.activeElement !== hiddenInput) {
+        hiddenInput.focus();
+        return;
+      }
+      
+      // Processar a tecla Enter para executar comandos
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const command = hiddenInput.value.trim();
+        executeCommand(command);
+        return;
+      }
+    }
+    
+    function updateCurrentPrompt() {
+      if (promptElement) {
+        currentInput = hiddenInput.value;
+        promptElement.innerHTML = `omaicon@redteam:~$ ${currentInput}<span class="cursor">█</span>`;
+      }
+    }
+    
+    function executeCommand(command) {
+      if (!command) return;
+      
+      // Limpar o input e o estado atual
+      hiddenInput.value = "";
+      currentInput = "";
+      
+      // Substituir o prompt atual com o comando executado
+      if (promptElement) {
+        const commandLine = document.createElement("div");
+        commandLine.innerText = `omaicon@redteam:~$ ${command}`;
+        promptElement.replaceWith(commandLine);
+        promptElement = null;
+      }
+
+      processCommand(command);
     }
 
     function processCommand(command) {
@@ -228,6 +261,10 @@ omaicon@redteam:~$ █
     }
     
     function runCommand(command) {
+      // Limpar qualquer entrada anterior
+      hiddenInput.value = "";
+      currentInput = "";
+      
       const commandLine = document.createElement("div");
       commandLine.innerText = `omaicon@redteam:~$ ${command}`;
       output.appendChild(commandLine);
@@ -236,11 +273,19 @@ omaicon@redteam:~$ █
     }
 
     function createNewPrompt() {
+      // Limpar qualquer estado anterior
+      hiddenInput.value = "";
+      currentInput = "";
+      
+      // Criar novo prompt
       const promptLine = document.createElement("div");
       promptLine.id = "current-prompt";
       promptLine.innerHTML = `omaicon@redteam:~$ <span class="cursor">█</span>`;
       output.appendChild(promptLine);
-      setTimeout(() => hiddenInput.focus(), 50);
+      promptElement = promptLine;
+      
+      // Garantir foco no input
+      setTimeout(focusInput, 50);
       
       // Garantir que a linha do prompt seja visível
       window.scrollTo(0, document.body.scrollHeight);
