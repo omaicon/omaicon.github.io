@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>omaicon | Hacker Terminal</title>
   <style>
     body {
@@ -9,12 +10,15 @@
       color: #00ff00;
       font-family: monospace;
       font-size: 16px;
-      padding: 20px;
+      padding: 15px;
       white-space: pre-wrap;
-      overflow: hidden;
+      margin: 0;
+      overflow-x: hidden;
     }
     #output {
       min-height: 90vh;
+      width: 100%;
+      overflow-wrap: break-word;
     }
     .cursor {
       display: inline-block;
@@ -41,6 +45,30 @@
     .menu-option:hover {
       background: #004400;
       border-radius: 3px;
+    }
+    
+    /* Estilos responsivos para dispositivos móveis */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+        padding: 10px;
+      }
+      .menu-option {
+        display: block;
+        width: 90%;
+        text-align: center;
+        margin: 8px auto;
+        padding: 10px 5px;
+        background: #002200;
+        border-radius: 5px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        font-size: 12px;
+        padding: 8px;
+      }
     }
   </style>
 </head>
@@ -105,7 +133,7 @@ omaicon@redteam:~$ █
         commandLine.innerText = `omaicon@redteam:~$ whoami`;
         output.appendChild(commandLine);
         
-        const response = "nome: Maicon (omaicon)\nprofissão: Analista de Segurança, Pentester e Red Team\nespecialista em C2 personalizados\nlinguagens: Golang, Python, C, C++, .NET";
+        const response = "nome: Maicon (omaicon)\nprofissão: Analista de Segurança, Pentester e Red Team\nlinguagens: Golang, Python, C, C++, .NET";
         
         const responseLine = document.createElement("div");
         responseLine.innerHTML = response.replace(/\n/g, "<br>");
@@ -144,7 +172,7 @@ omaicon@redteam:~$ █
       let response = "";
       
       if (command.toLowerCase() === "whoami") {
-        response = "nome: Maicon (omaicon)\nprofissão: Analista de Segurança, Pentester e Red Team\nespecialista em C2 personalizados\nlinguagens: Golang, Python, C, C++, .NET";
+        response = "nome: Maicon (omaicon)\nprofissão: Analista de Segurança, Pentester e Red Team\nlinguagens: Golang, Python, C, C++, .NET";
       } else if (command.toLowerCase() === "help") {
         displayHelp();
         return;
@@ -167,13 +195,13 @@ omaicon@redteam:~$ █
       const helpMenu = document.createElement("div");
       helpMenu.innerHTML = `
         <br>Comandos disponíveis:<br><br>
-        <div class="menu-option" onclick="openLink('palestras')">[ PALESTRAS ]</div> - Confira minhas apresentações em eventos de segurança<br>
-        <div class="menu-option" onclick="openLink('artigos')">[ ARTIGOS ]</div> - Leia meus artigos técnicos sobre segurança e tecnologia<br>
-        <div class="menu-option" onclick="openLink('projetos')">[ PROJETOS ]</div> - Conheça os projetos de segurança que desenvolvi<br>
-        <div class="menu-option" onclick="openLink('contato')">[ CONTATO ]</div> - Entre em contato comigo<br>
-        <div class="menu-option" onclick="openLink('github')">[ GITHUB ]</div> - Veja meus repositórios no GitHub<br>
-        <div class="menu-option" onclick="runCommand('whoami')">[ WHOAMI ]</div> - Exibir informações sobre mim<br>
-        <div class="menu-option" onclick="runCommand('clear')">[ CLEAR ]</div> - Limpar o terminal<br>
+        <div class="menu-option" onclick="openLink('palestras')">[ PALESTRAS ]</div>
+        <div class="menu-option" onclick="openLink('artigos')">[ ARTIGOS ]</div>
+        <div class="menu-option" onclick="openLink('projetos')">[ PROJETOS ]</div>
+        <div class="menu-option" onclick="openLink('contato')">[ CONTATO ]</div>
+        <div class="menu-option" onclick="openLink('github')">[ GITHUB ]</div>
+        <div class="menu-option" onclick="runCommand('whoami')">[ WHOAMI ]</div>
+        <div class="menu-option" onclick="runCommand('clear')">[ CLEAR ]</div>
       `;
       output.appendChild(helpMenu);
     }
