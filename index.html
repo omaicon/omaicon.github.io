@@ -32,6 +32,16 @@
       width: 0;
       pointer-events: none;
     }
+    .menu-option {
+      cursor: pointer;
+      margin: 5px 0;
+      padding: 5px;
+      display: inline-block;
+    }
+    .menu-option:hover {
+      background: #004400;
+      border-radius: 3px;
+    }
   </style>
 </head>
 <body onclick="focusInput()" onkeydown="focusInput()" ontouchstart="focusInput()">
@@ -89,9 +99,29 @@ omaicon@redteam:~$ █
     }
 
     function startInteractiveTerminal() {
-      createNewPrompt();
-      hiddenInput.focus();
-
+      // Inicia automaticamente com o comando whoami
+      setTimeout(() => {
+        const commandLine = document.createElement("div");
+        commandLine.innerText = `omaicon@redteam:~$ whoami`;
+        output.appendChild(commandLine);
+        
+        const response = "nome: Maicon (omaicon)\nprofissão: Analista de Segurança, Pentester e Red Team\nespecialista em C2 personalizados\nlinguagens: Golang, Python, C, C++, .NET";
+        
+        const responseLine = document.createElement("div");
+        responseLine.innerHTML = response.replace(/\n/g, "<br>");
+        output.appendChild(responseLine);
+        
+        // Executa automaticamente o comando help após o whoami
+        setTimeout(() => {
+          const helpCommandLine = document.createElement("div");
+          helpCommandLine.innerText = `omaicon@redteam:~$ help`;
+          output.appendChild(helpCommandLine);
+          
+          displayHelp();
+          createNewPrompt();
+        }, 1000);
+      }, 500);
+      
       hiddenInput.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
           e.preventDefault();
@@ -105,20 +135,76 @@ omaicon@redteam:~$ █
             lastPrompt.replaceWith(commandLine);
           }
 
-          let response = "";
-          if (command.toLowerCase() === "whoami") {
-            response = "nome: Maicon (omaicon)\nprofissão: Analista de Segurança, Pentester e Red Team\nespecialista em C2 personalizados\nlinguagens: Golang, Python, C, C++, .NET";
-          } else {
-            response = "Comando inválido.";
-          }
-
-          const responseLine = document.createElement("div");
-          responseLine.innerHTML = response.replace(/\n/g, "<br>");
-          output.appendChild(responseLine);
-
-          createNewPrompt();
+          processCommand(command);
         }
       });
+    }
+
+    function processCommand(command) {
+      let response = "";
+      
+      if (command.toLowerCase() === "whoami") {
+        response = "nome: Maicon (omaicon)\nprofissão: Analista de Segurança, Pentester e Red Team\nespecialista em C2 personalizados\nlinguagens: Golang, Python, C, C++, .NET";
+      } else if (command.toLowerCase() === "help") {
+        displayHelp();
+        return;
+      } else if (command.toLowerCase() === "clear" || command.toLowerCase() === "cls") {
+        output.innerHTML = "";
+        createNewPrompt();
+        return;
+      } else {
+        response = "Comando inválido. Digite 'help' para ver os comandos disponíveis.";
+      }
+
+      const responseLine = document.createElement("div");
+      responseLine.innerHTML = response.replace(/\n/g, "<br>");
+      output.appendChild(responseLine);
+
+      createNewPrompt();
+    }
+    
+    function displayHelp() {
+      const helpMenu = document.createElement("div");
+      helpMenu.innerHTML = `
+        <br>Comandos disponíveis:<br><br>
+        <div class="menu-option" onclick="openLink('palestras')">[ PALESTRAS ]</div> - Confira minhas apresentações em eventos de segurança<br>
+        <div class="menu-option" onclick="openLink('artigos')">[ ARTIGOS ]</div> - Leia meus artigos técnicos sobre segurança e tecnologia<br>
+        <div class="menu-option" onclick="openLink('projetos')">[ PROJETOS ]</div> - Conheça os projetos de segurança que desenvolvi<br>
+        <div class="menu-option" onclick="openLink('contato')">[ CONTATO ]</div> - Entre em contato comigo<br>
+        <div class="menu-option" onclick="openLink('github')">[ GITHUB ]</div> - Veja meus repositórios no GitHub<br>
+        <div class="menu-option" onclick="runCommand('whoami')">[ WHOAMI ]</div> - Exibir informações sobre mim<br>
+        <div class="menu-option" onclick="runCommand('clear')">[ CLEAR ]</div> - Limpar o terminal<br>
+      `;
+      output.appendChild(helpMenu);
+    }
+    
+    function openLink(page) {
+      // Aqui você pode definir para onde cada link deve apontar
+      const links = {
+        'palestras': '#palestras',
+        'artigos': '#artigos',
+        'projetos': '#projetos',
+        'contato': '#contato',
+        'github': 'https://github.com/omaicon'
+      };
+      
+      const url = links[page] || '#';
+      
+      const responseLine = document.createElement("div");
+      responseLine.innerHTML = `Redirecionando para ${page}...`;
+      output.appendChild(responseLine);
+      
+      setTimeout(() => {
+        window.location.href = url;
+      }, 1000);
+    }
+    
+    function runCommand(command) {
+      const commandLine = document.createElement("div");
+      commandLine.innerText = `omaicon@redteam:~$ ${command}`;
+      output.appendChild(commandLine);
+      
+      processCommand(command);
     }
 
     function createNewPrompt() {
@@ -127,6 +213,9 @@ omaicon@redteam:~$ █
       promptLine.innerHTML = `omaicon@redteam:~$ <span class="cursor">█</span>`;
       output.appendChild(promptLine);
       setTimeout(() => hiddenInput.focus(), 50);
+      
+      // Garantir que a linha do prompt seja visível
+      window.scrollTo(0, document.body.scrollHeight);
     }
 
     // Inicializa ao toque
