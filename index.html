@@ -25,10 +25,18 @@
       50% { background: #00ff00; color: black; }
       100% { background: transparent; }
     }
+    #hidden-input {
+      position: absolute;
+      opacity: 0;
+      height: 0;
+      width: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
-<body onclick="startTyping()" onkeydown="startTyping()" ontouchstart="startTyping()">
+<body onclick="focusInput()" onkeydown="focusInput()" ontouchstart="focusInput()">
   <div id="output">> Iniciando terminal... (toque ou pressione uma tecla)</div>
+  <input id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <script>
     const code = `
 omaicon@redteam:~$ sudo ./access_granted
@@ -51,11 +59,16 @@ Porta 443/tcp aberta (HTTPS)
 omaicon@redteam:~$ echo "Bem-vindo ao terminal"
 Bem-vindo ao terminal
 
-omaicon@redteam:~$ █
 `;
+
     let index = 0;
     let started = false;
     const output = document.getElementById('output');
+    const hiddenInput = document.getElementById('hidden-input');
+
+    function focusInput() {
+      hiddenInput.focus();
+    }
 
     function startTyping() {
       if (started) return;
@@ -76,48 +89,49 @@ omaicon@redteam:~$ █
 
     function startInteractiveTerminal() {
       createNewPrompt();
+      hiddenInput.focus();
 
-      document.body.onkeydown = function(e) {
+      hiddenInput.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
           e.preventDefault();
-          const input = document.getElementById("input-line");
-          const command = input.innerText.trim();
-          const prompt = document.getElementById("prompt").innerText;
-          const cursor = document.querySelector(".cursor");
+          const command = hiddenInput.value.trim();
+          hiddenInput.value = "";
 
-          const fullCommand = document.createElement("div");
-          fullCommand.innerHTML = `${prompt}${command}`;
-          output.replaceChild(fullCommand, input.parentNode);
-
-          if (cursor) cursor.remove();
+          const lastPrompt = document.getElementById("current-prompt");
+          if (lastPrompt) {
+            const commandLine = document.createElement("div");
+            commandLine.innerText = `omaicon@redteam:~$ ${command}`;
+            lastPrompt.replaceWith(commandLine);
+          }
 
           let response = "";
           if (command.toLowerCase() === "whoami") {
-            response = "nome: Maicon (omaicon)<br>profissão: Analista de Segurança, Pentester e Red Team<br>especialista em C2 personalizados<br>linguagens: Golang, Python, C, C++, .NET";
+            response = "nome: Maicon (omaicon)\nprofissão: Analista de Segurança, Pentester e Red Team\nespecialista em C2 personalizados\nlinguagens: Golang, Python, C, C++, .NET";
           } else {
             response = "Comando inválido.";
           }
 
           const responseLine = document.createElement("div");
-          responseLine.innerHTML = response;
+          responseLine.innerHTML = response.replace(/\n/g, "<br>");
           output.appendChild(responseLine);
 
           createNewPrompt();
         }
-      };
+      });
     }
 
     function createNewPrompt() {
-      const promptDiv = document.createElement("div");
-      promptDiv.innerHTML = '<span id="prompt">omaicon@redteam:~$ </span><span id="input-line" contenteditable="true"></span><span class="cursor">█</span>';
-      output.appendChild(promptDiv);
-      setTimeout(() => {
-        const input = document.getElementById("input-line");
-        input.focus();
-        document.execCommand('selectAll', false, null);
-        document.getSelection().collapseToEnd();
-      }, 10);
+      const promptLine = document.createElement("div");
+      promptLine.id = "current-prompt";
+      promptLine.innerHTML = `omaicon@redteam:~$ <span class="cursor">█</span>`;
+      output.appendChild(promptLine);
+      setTimeout(() => hiddenInput.focus(), 50);
     }
+
+    // Inicializa ao toque
+    document.body.addEventListener("click", startTyping);
+    document.body.addEventListener("touchstart", startTyping);
+    document.body.addEventListener("keydown", startTyping);
   </script>
 </body>
 </html>
