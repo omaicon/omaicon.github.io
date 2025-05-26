@@ -40,7 +40,6 @@
       border-radius: 3px;
     }
     
-    /* Estilos responsivos para dispositivos móveis */
     @media (max-width: 768px) {
       body {
         font-size: 14px;
@@ -96,7 +95,6 @@ omaicon@redteam:~$ █
     let started = false;
     const output = document.getElementById('output');
 
-    // Função para iniciar a animação de texto no início
     function startTyping() {
       if (started) return;
       started = true;
@@ -104,7 +102,6 @@ omaicon@redteam:~$ █
       typeNextChar();
     }
 
-    // Função para digitar o texto inicial caractere por caractere
     function typeNextChar() {
       if (index < code.length) {
         output.innerHTML += code.charAt(index);
@@ -115,9 +112,7 @@ omaicon@redteam:~$ █
       }
     }
 
-    // Função para iniciar o terminal interativo
     function startInteractiveTerminal() {
-      // Inicia automaticamente com o comando whoami
       setTimeout(() => {
         const commandLine = document.createElement("div");
         commandLine.innerText = `omaicon@redteam:~$ whoami`;
@@ -129,7 +124,6 @@ omaicon@redteam:~$ █
         responseLine.innerHTML = response.replace(/\n/g, "<br>");
         output.appendChild(responseLine);
         
-        // Executa automaticamente o comando help após o whoami
         setTimeout(() => {
           const helpCommandLine = document.createElement("div");
           helpCommandLine.innerText = `omaicon@redteam:~$ help`;
@@ -137,20 +131,16 @@ omaicon@redteam:~$ █
           
           displayHelp();
           
-          // Adiciona o prompt estático (sem capacidade de digitação)
           const promptLine = document.createElement("div");
           promptLine.innerHTML = `omaicon@redteam:~$ <span class="cursor">█</span>`;
           output.appendChild(promptLine);
           
-          // Rola para o final da página
           window.scrollTo(0, document.body.scrollHeight);
         }, 1000);
       }, 500);
     }
 
-    // Função para processar comandos
     function processCommand(command) {
-      // Exibe o comando que seria executado
       const commandLine = document.createElement("div");
       commandLine.innerText = `omaicon@redteam:~$ ${command}`;
       output.appendChild(commandLine);
@@ -176,16 +166,13 @@ omaicon@redteam:~$ █
       responseLine.innerHTML = response.replace(/\n/g, "<br>");
       output.appendChild(responseLine);
       
-      // Adiciona o prompt estático após a resposta
       const promptLine = document.createElement("div");
       promptLine.innerHTML = `omaicon@redteam:~$ <span class="cursor">█</span>`;
       output.appendChild(promptLine);
       
-      // Rola para o final da página
       window.scrollTo(0, document.body.scrollHeight);
     }
     
-    // Função para exibir o menu de ajuda
     function displayHelp() {
       const helpMenu = document.createElement("div");
       helpMenu.innerHTML = `
@@ -199,9 +186,7 @@ omaicon@redteam:~$ █
       output.appendChild(helpMenu);
     }
     
-    // Função para abrir links
     function openLink(page) {
-      // Aqui você pode definir para onde cada link deve apontar
       const links = {
         'artigos': '#artigos',
         'projetos': '#projetos',
@@ -220,7 +205,6 @@ omaicon@redteam:~$ █
       }, 1000);
     }
 
-    // Inicializa com toque ou clique
     document.body.addEventListener("click", startTyping);
     document.body.addEventListener("touchstart", startTyping);
   </script>
