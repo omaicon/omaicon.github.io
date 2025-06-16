@@ -1,0 +1,57 @@
+body {
+  background: black;
+  color: #00ff00;
+  font-family: monospace;
+  font-size: 16px;
+  padding: 15px;
+  white-space: pre-wrap;
+  margin: 0;
+  overflow-x: hidden;
+}
+#output {
+  min-height: 90vh;
+  width: 100%;
+  overflow-wrap: break-word;
+}
+.cursor {
+  display: inline-block;
+  width: 10px;
+  animation: blink 1s step-start 0s infinite;
+}
+@keyframes blink {
+  50% { background: #00ff00; color: black; }
+  100% { background: transparent; }
+}
+.menu-option {
+  cursor: pointer;
+  margin: 5px 0;
+  padding: 5px;
+  display: inline-block;
+}
+.menu-option:hover {
+  background: #004400;
+  border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+    padding: 10px;
+  }
+  .menu-option {
+    display: block;
+    width: 90%;
+    text-align: center;
+    margin: 8px auto;
+    padding: 10px 5px;
+    background: #002200;
+    border-radius: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
