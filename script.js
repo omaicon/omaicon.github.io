@@ -34,7 +34,7 @@ function startInteractiveTerminal() {
     commandLine.innerText = `omaicon@redteam:~$ whoami`;
     output.appendChild(commandLine);
     
-    const response = "nome: Maicon Christ (omaicon)\n Red Team | Offensive Tools Developer | Pentest  \nlinguagens: Golang, Python, C, C++, .NET";
+    const response = "nome: Maicon Christ (omaicon)\nRed Team | Offensive Tools Developer | Pentest  \nlinguagens: Golang, Python, C, C++, .NET";
     
     const responseLine = document.createElement("div");
     responseLine.innerHTML = response.replace(/\n/g, "<br>");
