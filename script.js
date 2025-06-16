@@ -101,7 +101,7 @@ function displayHelp() {
 
 function openLink(page) {
   const links = {
-    'artigos': '#artigos',
+    'artigos': 'artigos',
     'github': 'https://github.com/omaicon'
   };
   
