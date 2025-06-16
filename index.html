@@ -105,7 +105,7 @@ omaicon@redteam:~$ █
         commandLine.innerText = `omaicon@redteam:~$ whoami`;
         output.appendChild(commandLine);
         
-        const response = "nome: Maicon Christ (omaicon)\nprofissão: Analista de Segurança, Pentester e Red Team\nlinguagens: Golang, Python, C, C++, .NET";
+        const response = "nome: Maicon Christ (omaicon)\n Red Team | Offensive Tools Developer | Pentest  \nlinguagens: Golang, Python, C, C++, .NET";
         
         const responseLine = document.createElement("div");
         responseLine.innerHTML = response.replace(/\n/g, "<br>");
@@ -165,8 +165,6 @@ omaicon@redteam:~$ █
       helpMenu.innerHTML = `
         <br>Comandos disponíveis:<br>
         <div class="menu-option" onclick="openLink('artigos')">[ ARTIGOS ]</div>
-        <div class="menu-option" onclick="openLink('projetos')">[ PROJETOS ]</div>
-        <div class="menu-option" onclick="openLink('contato')">[ CONTATO ]</div>
         <div class="menu-option" onclick="openLink('github')">[ GITHUB ]</div>
       `;
       output.appendChild(helpMenu);
@@ -175,8 +173,6 @@ omaicon@redteam:~$ █
     function openLink(page) {
       const links = {
         'artigos': '#artigos',
-        'projetos': '#projetos',
-        'contato': '#contato',
         'github': 'https://github.com/omaicon'
       };
       
