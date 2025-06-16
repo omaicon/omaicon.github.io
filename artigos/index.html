@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>omaicon | Artigos</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .article-card {
+      border: 1px solid #00ff00;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .article-card:hover {
+      background-color: #004400;
+    }
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #004400;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 100;
+    }
+    .home-button:hover {
+      background-color: #006600;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="home-button" onclick="window.location.href='/'">[ HOME ]</div>
+  
+  <h1>Artigos</h1>
+  
+  <div class="article-card" onclick="window.location.href='/artigos/dino-c2/'">
+    <h2>DINO C2</h2>
+    <p>Um projeto de Command & Control para operações Red Team</p>
+    <div class="read-more">Ler artigo →</div>
+  </div>
+  
+  <script>
+    // Adicione mais artigos no futuro
+  </script>
+</body>
+</html>
