@@ -4,8 +4,6 @@ omaicon@redteam:~$ sudo ./access_granted
 [+] Verificando conexões...
 [+] Sessão ativa em 192.168.0.66
 [+] Acesso root concedido.
-omaicon@redteam:~$ echo "Bem-vindo"
-Bem-vindo
 omaicon@redteam:~$ █
 `;
 
