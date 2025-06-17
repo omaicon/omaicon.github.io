@@ -7,13 +7,18 @@
   <link rel="stylesheet" href="../../style.css">
   <style>
     body {
-      line-height: 1.6;
-      padding: 20px;
+      line-height: 1.3;
+      padding: 5px;
+      text-align: left !important;
     }
+    
     .article-container {
       max-width: 800px;
       margin: 0 auto;
+      text-align: left !important;
+      display: block;
     }
+    
     .navigation {
       position: fixed;
       top: 20px;
@@ -22,30 +27,76 @@
       gap: 10px;
       z-index: 100;
     }
+    
     .nav-button {
       background-color: #004400;
       padding: 10px 15px;
       border-radius: 5px;
       cursor: pointer;
     }
+    
     .nav-button:hover {
       background-color: #006600;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
+    
+    h1, h2, h3, p, ul, li {
+      text-align: left !important;
+      width: 100%;
+      display: block;
     }
+    
+    h1 {
+      margin-bottom: 5px;
+      margin-top: 5px;
+    }
+    
+    h2 {
+      margin-bottom: 5px;
+      margin-top: 5px;
+    }
+    
+    h3 {
+      margin-bottom: 5px;
+      margin-top: 5px;
+    }
+    
+    p {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    
+    ul {
+      margin-top: 0;
+      margin-bottom: 5px;
+      padding-left: 5px;
+    }
+    
     pre {
       background-color: #001100;
       padding: 15px;
       border-radius: 5px;
       overflow-x: auto;
+      text-align: left;
     }
+    
     img {
       max-width: 100%;
       display: block;
       margin: 20px auto;
       border: 1px solid #00ff00;
+    }
+    
+    .img-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+    
+    .img-ajustavel {
+      width: 60%; /* ajuste conforme necessário */
+      max-width: 500px;
+      min-width: 200px;
     }
   </style>
 </head>
@@ -56,35 +107,120 @@
   </div>
   
   <div class="article-container">
-    <h1>DINO C2: Um Framework de Command & Control</h1>
+    <h1>Arquitetura e Funcionamento do C2 DinoC2</h1>
     
-    <p>
-      O DINO C2 é um projeto pessoal para operações Red Team, desenvolvido para fornecer uma infraestrutura robusta
-      de Command & Control com foco em evasão de defesas e operabilidade segura.
-    </p>
-    
-    <h2>Sobre o Projeto</h2>
-    <p>
-      Este artigo descreve a arquitetura e desenvolvimento do DINO C2, um framework de Command & Control
-      escrito principalmente em Golang e projetado para operações Red Team profissionais.
-    </p>
-    
-    <h2>Características Principais</h2>
-    <ul>
-      <li>Comunicação criptografada ponto a ponto</li>
-      <li>Múltiplos vetores de comunicação</li>
-      <li>Geração dinâmica de implantes</li>
-      <li>Evasão de EDRs/AVs modernos</li>
-      <li>Módulos extensíveis</li>
-    </ul>
-    
-    <h2>Arquitetura</h2>
-    <p>
-      O DINO C2 foi projetado com uma arquitetura modular que permite adaptabilidade a diferentes cenários operacionais.
-      Mais detalhes da implementação serão adicionados neste artigo em breve.
-    </p>
-    
-    <p><em>Este artigo está em desenvolvimento e será atualizado com mais informações sobre o projeto DINO C2.</em></p>
+    <h2>Introdução</h2>
+    <p>O sistema de Comando e Controle (C2) DinoC2 é uma estrutura de software projetada para operações de Red Team, oferecendo administração remota de sistemas com foco em furtividade e evasão de defesas.<br>Neste artigo, exploramos a arquitetura e o funcionamento do DinoC2, abordando seus principais componentes, métodos de comunicação, mecanismos de persistência e funcionalidades operacionais.</p>
+    <p>Em 2025, palestrei na Village Red Team da BSides Vitória (ES), apresentando o "DinoC2", uma estrutura de Comando e Controle desenvolvida do zero em Golang, utilizando serviços legítimos do Google como canal de comunicação e aplicando técnicas eficazes para bypass de EDRs entre os mais avançados do mercado.
+Tive a honra de compartilhar esse momento com profissionais de renome na segurança ofensiva, como Fernando Mengali, Hamilton Domenes(arplhmd), Douglas Poerschke Rocha, Higor Diego e Ben-Hur Santos Ott, cujas presenças enriqueceram o debate e validaram a abordagem apresentada.</p>
+    <h2>Canal de Comunicação</h2>
+    <p>Uma característica distintiva deste C2 é a utilização do Google Drive<br>como canal de comunicação.<br>Infraestrutura de nuvem: Elimina a necessidade de servidores dedicados<br>Comunicação assíncrona: Os agentes consultam periodicamente o Drive por novos comandos<br>Evasão de detecção: Utiliza serviços legitimamente usados por organizações.</p>
+
+<div class="img-center">
+  <img src="fluxo.png" alt="Fluxo de Comunicação DinoC2" class="img-ajustavel" style="width: 60%; max-width: 500px;">
+</div>
+
+<h2>Painel de Controle Centralizado</h2>
+
+<p>O DinoC2 conta com um painel de controle web inspirado em consoles retro e terminais hackers clássicos, projetado para ser intuitivo e funcional durante operações Red Team.</p>
+
+<div class="img-center">
+  <img src="painel.png" alt="Fluxo de Comunicação DinoC2" class="img-ajustavel" style="width: 60%; max-width: 500px;">
+</div>
+
+<H3>Funcionalidades principais</H3>
+
+<p>Linha de Comando Superior: onde comandos como ALL, heartbeat, ou comandos específicos por ID são enviados diretamente.
+
+Botões de Ação:
+
+HELP: ajuda com comandos disponíveis
+
+[ALL] ONLINE: lista agentes ativos
+
+UPLOAD FILE: envia arquivos para o agente
+
+CRIAR ZIP: permite a criação de arquivos .zip criptografados, que podem conter outros payloads ou arquivos auxiliares usados na operação (keylogger,Print Screen,etc...)<br>Após o recebimento, o agente realiza a descompactação, restaurando os arquivos para execução ou uso interno.
+
+DRIVE: abre o navegador interno do Google Drive controlado
+
+LOG: permite acessar um histórico completo das interações realizadas entre o operador e os agentes.
+
+🔊 ON: ativa/desativa notificações sonoras
+
+Agentes Disponíveis: lista os beacons ativos com seus respectivos IDs
+
+Commands Sent / Responses Received:
+
+À esquerda, o histórico de comandos enviados
+
+À direita, as respostas dos agentes em tempo real</p>
+
+    <h2>Fluxo do Agente</h2>
+    <h3>Inicialização</h3>
+    <p>Ao ser executado, o agente:<br>Verifica se já está configurado para inicializar com o sistema<br>Gera um ID único para identificar a máquina comprometida<br>Configura persistência através do registro do Windows<br>Inicia um ciclo de verificação de comandos.</p>
+
+    <h2>Processamento de Comandos</h2>
+    <h3>Verificação de Comandos</h3>
+    <p>O agente verifica periodicamente a existência de novos comandos:<br>Conecta-se ao Google Drive usando credenciais de serviço embutidas<br>Busca por arquivos que seguem o padrão "CMD_ALL" ou "CMD_[ID-AGENTE]"<br>Processa cada arquivo encontrado e executa os comandos contidos.</p>
+
+    <h3>Controle Centralizado e Individualizado</h3>
+    <p>O sistema permite tanto envio de comandos para todos os agentes (CMD_ALL) quanto para agentes específicos.</p>
+
+    <h3>Prevenção de Execução Duplicada</h3>
+    <p>O C2 implementa um sistema para evitar que comandos sejam executados múltiplas vezes.</p>
+
+    <h2>Comunicação e Respostas</h2>
+    <p>As respostas aos comandos são formatadas e enviadas de volta ao Drive,<br>cada resposta inclui:<br>Identificação do agente<br>Comando executado<br>Timestamp<br>Resultado da execução do comando</p>
+
+<div class="img-center">
+  <img src="online.png" alt="Fluxo de Comunicação DinoC2" class="img-ajustavel" style="width: 60%; max-width: 500px;">
+</div>
+
+    <h2>Funcionalidades Disponíveis</h2>
+
+    <h3>Reconhecimento e Coleta de Dados</h3>
+    <p>sysinfo: Coleta informações detalhadas do sistema (SO, usuário, rede, dispositivos)<br>htop: Lista processos em execução<br>ls: Enumera arquivos e diretórios
+
+    <h3>Acesso Persistente</h3>
+    <p>add: Adiciona o agente à inicialização do sistema<br>newadd: Adiciona arquivos específicos à inicialização</p>
+
+    <h3>Manipulação de Arquivos</h3>
+    <p>cp/mv: Copia ou move arquivos entre diretórios<br>del: Remove arquivos<br>rename: Renomeia arquivos<br>unzip: Descompacta arquivos</p>
+
+    <h3>Exfiltração de Dados</h3>
+    <p>get: Envia arquivos ou diretórios para o Drive<br>put: Baixa arquivos do Drive para o sistema comprometido</p>
+
+    <h3>Controle do Sistema</h3>
+    <p>run: Executa payloads enviados no sistema comprometido<br>kill: Encerra processos em execução<br>restart: Reinicia o sistema alvo</p>
+
+    <h3>Controle do Agente</h3>
+    <p>heartbeat: Configura intervalos aleatórios de comunicação<br>sleep: Define intervalos fixos de comunicação</p>
+
+    <h2>Técnicas de Evasão</h2>
+    <p>O DinoC2 emprega várias técnicas para evitar detecção:<br>Comunicação através de serviços legítimos (Google Drive)<br>Intervalos de comunicação variáveis para evitar padrões detectáveis<br>Nomes de processos que mimetizam software legítimo<br>Execução discreta de outros payloads enviados usando COM+WMI</p>
+<p>O DinoC2 adota uma abordagem stealth para execução de comandos nos agentes, utilizando chamadas indiretas às APIs nativas do Windows por meio de DLLs e ponteiros.
+
+Essa técnica evita o uso de shells externos (como cmd.exe ou powershell.exe), que geralmente disparam alertas de EDRs e criam registros no Event Viewer.
+
+Ao interagir diretamente com o sistema operacional via ponteiros de função, é possível realizar chamadas nativas de forma discreta.
+
+Essa estratégia reduz significativamente a geração de event logs no Windows, tornando as ações do agente praticamente invisíveis para mecanismos de detecção baseados em comportamento.</p>
+
+<p>O DinoC2 também utiliza a combinação de COM (Component Object Model) com WMI (Windows Management Instrumentation) para executar payloads remotamente de forma discreta e eficaz.
+
+Essa técnica permite que os comandos sejam executados diretamente no subsistema do Windows, sem herdar o contexto de execução do processo do C2.
+
+Isso significa que o processo gerado não tem relação de pai-filho com o agente de comando, dificultando correlações por ferramentas de EDR e análises de cadeia de processo.
+
+Além disso, não há invocação de shells tradicionais (cmd.exe, powershell.exe), evitando alertas por comportamento suspeito ou geração de logs típicos.
+
+O uso da COM permite abstrair e chamar funções do sistema de forma indireta, enquanto o WMI é utilizado para iniciar o processo de forma nativa.</p>
+
+    <h2>Conclusão</h2>
+<p>O DinoC2 é uma plataforma de Comando e Controle desenvolvida com foco em operações furtivas, utilizando serviços legítimos como o Google Drive para canal de comunicação,<br>o que dificulta sua detecção em ambientes monitorados.
+Com uma arquitetura modular, técnicas de evasão sofisticadas e um conjunto abrangente de funcionalidades, o DinoC2 representa uma solução poderosa para simulações avançadas de operações de Red Team.</p>
+
   </div>
 </body>
 </html>
