@@ -1,6 +1,5 @@
 const code = `
 omaicon@redteam:~$ sudo ./access_granted
-[+] Inicializando ambiente seguro...
 [+] Verificando conexões...
 [+] Sessão ativa em 192.168.0.66
 [+] Acesso root concedido.
@@ -22,7 +21,7 @@ function typeNextChar() {
   if (index < code.length) {
     output.innerHTML += code.charAt(index);
     index++;
-    setTimeout(typeNextChar, 20);
+    setTimeout(typeNextChar, 5);
   } else {
     startInteractiveTerminal();
   }
@@ -34,7 +33,7 @@ function startInteractiveTerminal() {
     commandLine.innerText = `omaicon@redteam:~$ whoami`;
     output.appendChild(commandLine);
     
-    const response = "Maicon Christ (omaicon)\nRed Team | Offensive Tools Developer | Pentest  \nlinguagens: Golang, Python, C, C++, .NET";
+    const response = "Maicon Christ (omaicon)\nRed Team | Offensive Tools Developer | Pentest  \nGolang, Python, C, C++, .NET";
     
     const responseLine = document.createElement("div");
     responseLine.innerHTML = response.replace(/\n/g, "<br>");
