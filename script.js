@@ -94,6 +94,7 @@ function displayHelp() {
     <br>Comandos disponíveis:<br>
     <div class="menu-option" onclick="openLink('artigos')">[ ARTIGOS ]</div>
     <div class="menu-option" onclick="openLink('github')">[ GITHUB ]</div>
+    <div class="menu-option" onclick="openLink('linkedin')">[ LINKEDIN ]</div>
   `;
   output.appendChild(helpMenu);
 }
@@ -101,7 +102,8 @@ function displayHelp() {
 function openLink(page) {
   const links = {
     'artigos': '/artigos',
-    'github': 'https://github.com/omaicon'
+    'github': 'https://github.com/omaicon',
+    'linkedin': 'https://www.linkedin.com/in/maicon-christ-7443542b0'
   };
   
   const url = links[page] || '#';
