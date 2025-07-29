@@ -224,13 +224,6 @@ Isso significa que o processo gerado não tem relação de pai-filho com o agent
 Além disso, não há invocação de shells tradicionais (cmd.exe, powershell.exe), evitando alertas por comportamento suspeito ou geração de logs típicos.
 
 O uso da COM permite abstrair e chamar funções do sistema de forma indireta, enquanto o WMI é utilizado para iniciar o processo de forma nativa.</p>
-    <h2>Demonstração Prática (PoC)</h2> <p>Para validar a eficácia do DinoC2 em um cenário realista de Red Team, foi desenvolvida uma Prova de Conceito (PoC) registrada em vídeo. Nessa demonstração, o usuário final recebe um e-mail de phishing contendo um link do OneDrive para baixar arquivos supostamente legítimos. Entre eles, está o executável nomeado como <strong>"Maquete3D_TermoFinal.exe"</strong>, que atua como o agente DinoC2. Ao executá-lo, uma página PDF é exibida em ambiente web para manter a credibilidade da isca, enquanto o terminal do executável surge brevemente apenas para indicar que a execução foi concluída com sucesso. Nesse momento, o agente já configurou a persistência no sistema e iniciou o ciclo de comunicação com o servidor C2, aguardando comandos. A simulação demonstra com clareza como a entrega, evasão e inicialização do agente são conduzidas de forma discreta e eficaz.</p>
-<div class="img-center">
-  <video controls class="img-ajustavel" style="width: 80%; max-width: 700px;">
-    <source src="poc.mp4" type="video/mp4">
-    Seu navegador não suporta a reprodução de vídeos.
-  </video>
-   </div>
     <h2>Conclusão</h2>
 <p>O DinoC2 é uma plataforma de Comando e Controle desenvolvida com foco em operações furtivas, utilizando serviços legítimos como o Google Drive para canal de comunicação,<br>o que dificulta sua detecção em ambientes monitorados.
 Com uma arquitetura modular, técnicas de evasão sofisticadas e um conjunto abrangente de funcionalidades, o DinoC2 representa uma solução poderosa para simulações avançadas de operações de Red Team.</p>
